@@ -1,0 +1,16 @@
+name: cd
+on:
+  workflow_run:
+    workflows: ci
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+       - name: Deployment using docker
+         run: |
+           sudo docker rm -f web1
+           sudo docker rmi -f cloudsihmar/intel:latest
+           sudo docker run -dt --name web1 -p 9000:8080 cloudsihmar/intel:latest
